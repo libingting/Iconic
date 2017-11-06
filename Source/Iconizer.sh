@@ -10,7 +10,9 @@
 #
 
 # The optional font file path passed as arg
-INPUT_PATH=$1
+# INPUT_PATH=$2
+# files fonts
+FILE_PATH=$1
 
 # The root path for the generated files
 OUTPUT_PATH=Source
@@ -94,13 +96,24 @@ function init()
     fi
 }
 
+##Only TTF and OTF supported font files
+if [ -z ${FILE_PATH} ]; then
+  echo "Missing file to parse. Please provide the path of a font file on disk (TTF or OTF)."
+
+elif [ -d ${FILE_PATH} ]; then
+    echo "scaning directory for font files..."
+
+    find ${FILE_PATH} -type f -name '*.ttf' -o -name "*.otf" | while read F; do
+        echo "${F}"
+        init ${F}
+done
 
 # Handle missing file path
-if [ -z ${INPUT_PATH} ]; then
-    echo "Iconizer: No font file was found at path '${INPUT_PATH}'. Using FontAwesome as default font."
+# if [ -z ${INPUT_PATH} ]; then
+#    echo "Iconizer: No font file was found at path '${INPUT_PATH}'. Using FontAwesome as default font."
 
     # Uses FontAwesome as default
-    init 'Fonts/FontAwesome/FontAwesome.otf'
-else
-    init ${INPUT_PATH}
-fi
+#    init 'Fonts/FontAwesome/FontAwesome.otf'
+#else
+#   init ${INPUT_PATH}
+#fi
