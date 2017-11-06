@@ -1,6 +1,0 @@
-#FONT_PATH="/Users/vsun/ConnectDotz/icon-fonts/fonts"
-FONT_PATH="/Users/vsun/ConnectDotz/icon-fonts/fonts/plus2.ttf"
-#FONT_PATH="/Users/vsun/ConnectDotz/icon-fonts/fonts/map-icons.ttf"
-#FONT_PATH="/Users/vsun/ConnectDotz/icon-fonts/fonts/fontalok.ttf"
-#FONT_PATH="/Users/vsun/ConnectDotz/icon-fonts/fonts/ionicons.ttf"
-sh Source/Iconizer/Iconizer.sh ${FONT_PATH} test/ --verbose

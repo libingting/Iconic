@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by Ignacio Romero on 5/22/16.
-//  Copyright © 2016 DZN Labs All rights reserved.
+//  Copyright © 2017 DZN. All rights reserved.
 //
 
 import UIKit
@@ -18,20 +18,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super.init()
         
+        // It is important to register the icon font as soon as possible,
+        // and make the resources available right after launching the app.
+        //
         // This example uses Awesome Font
         // http://fontawesome.io/cheatsheet/
-        //
-        // It is important to register the icon font when initializing the app delegate
-        // Specially when using IB Storyboard, since the layout needs the resources available asap.
         
         FontAwesomeIcon.register()
     }
 
-    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return true
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return true
     }
 }

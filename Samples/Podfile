@@ -1,28 +1,43 @@
+
 source 'https://github.com/CocoaPods/Specs.git'
 
+# useful for Playground interoperability
+abstract_target 'Playground'
 use_frameworks!
 
-abstract_target 'Playground'
-
-def common_pods
-    # Since this library depends on 'prepare_command' for compiling SwiftGen
-    # and other automations, we need to install it as a remote pod.
-    # pod 'Iconic', :git => 'https://github.com/dzenbot/Iconic.git', :submodules => true
-    # pod 'Iconic', :git => 'https://github.com/connectdotz/Iconic.git', :branch => "multi-font",  :submodules => true
-    pod 'Iconic', :path => '../'
+def iconic
+    pod 'Iconic', :path => '../Iconic.podspec'
 end
 
 target 'iOS' do
     platform :ios, '8.0'
-    common_pods
+    iconic
 end
 
 target 'tvOS' do
     platform :tvos, '9.0'
-    common_pods
+    iconic
 end
 
-target 'UnitTests' do
-    # No need for installing the pod.
-    # This target tests 'Iconic' main class only.
+target 'watchOS' do
+    platform :watchos, '2.0'
+    iconic
+end
+
+target 'watchOS Extension' do
+    platform :watchos, '2.0'
+    iconic
+end
+
+target 'Tests' do
+    pod 'FBSnapshotTestCase/Core'
+    iconic
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['SWIFT_VERSION'] = '3.0'
+        end
+    end
 end

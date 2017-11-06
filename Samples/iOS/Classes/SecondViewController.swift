@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by Ignacio Romero on 5/22/16.
-//  Copyright © 2016 DZN Labs All rights reserved.
+//  Copyright © 2017 DZN. All rights reserved.
 //
 
 import UIKit
@@ -11,14 +11,12 @@ import Iconic
 
 class SecondViewController: UIViewController {
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var slider: UISlider!
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        commonInit()
-    }
-    
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var iconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var iconHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scaleSlider: UISlider!
+    @IBOutlet weak var colorSlider: UISlider!
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
@@ -26,46 +24,58 @@ class SecondViewController: UIViewController {
     
     func commonInit() -> Void {
         
-        let pictureImage = FontAwesomeIcon.Picture.image(size: CGSizeMake(20, 20), color:.greenColor())
-        let cogImage = FontAwesomeIcon.Cog.image(size: CGSizeMake(30, 24), color:.blueColor())
+        let tabItem = UITabBarItem(withIcon: .pictureIcon, size: CGSize(width: 20, height: 20), title: "As Image")
         
-        let tabItem = UITabBarItem(title: "As Image", image: pictureImage, tag: FontAwesomeIcon.Picture.rawValue)
+        self.title = tabItem.title
+        self.tabBarItem = tabItem
         
-        self.title = tabItem.title;
-        self.tabBarItem = tabItem;
-        
-        let buttonItem = UIBarButtonItem(image: cogImage, style:.Plain, target: self, action: NSSelectorFromString("didTapRightItem"))
+        let buttonItem = UIBarButtonItem(withIcon: .cogIcon, size: CGSize(width: 24, height: 24), target: self, action: #selector(didTapRightItem))
         self.navigationItem.rightBarButtonItem = buttonItem
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        updateImage(1.0)
         updateTitleView()
+        
+        updateIconScale(150)
+        updateIconColor(150)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     func didTapRightItem() {
-        navigationController?.navigationBar.hidden = true
-        tabBarController?.tabBar.hidden = true
+        navigationController?.navigationBar.isHidden = true
+        tabBarController?.tabBar.isHidden = true
     }
     
-    @IBAction func didChangeScale(sender: UISlider) {
+    @IBAction func didChangeScale(_ sender: UISlider) {
         print("did change scale to '\(sender.value)'")
         
-        updateImage(sender.value)
+        if sender == scaleSlider {
+            updateIconScale(sender.value)
+        }
+        if sender == colorSlider {
+            updateIconColor(sender.value)
+        }
     }
     
-    func updateImage(scale: Float) {
+    func updateIconScale(_ scale: Float) {
         
-        let size = CGFloat(ceil(20.0 * scale))
-        let image = FontAwesomeIcon.GithubAlt.image(size: CGSizeMake(size, size), color: .blackColor())
+        let size = CGFloat(ceil(scale))
         
-        imageView.image = image
+        iconWidthConstraint.constant = size
+        iconHeightConstraint.constant = size
+    }
+    
+    func updateIconColor(_ scale: Float) {
+        
+        let hue = CGFloat(ceil(scale))
+        let color = UIColor(hue: hue/255, saturation: 0.9, brightness: 0.9, alpha: 1.0)
+        
+        iconImageView.tintColor = color
     }
 }
 
@@ -79,16 +89,15 @@ class StepSlider: UISlider {
         self.addGestureRecognizer(tapGesture)
     }
     
-    func didTapSlider(gesture: UIGestureRecognizer) {
+    func didTapSlider(_ gesture: UIGestureRecognizer) {
         
-        let location = gesture.locationInView(gesture.view)
+        let location = gesture.location(in: gesture.view)
         
         let maxValue = CGFloat(self.maximumValue)
-        let newValue = location.x * maxValue / CGRectGetWidth(self.frame)
+        let newValue = location.x * maxValue / self.frame.width
         
         self.value = Float(newValue)
         
-        self.sendActionsForControlEvents(.ValueChanged)
+        self.sendActions(for: .valueChanged)
     }
 }
-
